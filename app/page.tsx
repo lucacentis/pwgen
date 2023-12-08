@@ -77,7 +77,7 @@ export default function Home() {
             />
           </label>
           <br />
-          <button onClick={generatePassword} className="bg-blue-500 text-white px-4 py-2 rounded">
+          <button onClick={generatePassword} className="bg-green-500 hover:bg-green-700 text-white font-bold mt-4 px-4 py-2 rounded">
             Generate Password
           </button>
           <br />
