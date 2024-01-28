@@ -1,7 +1,7 @@
 "use client";
 import { useState } from 'react';
 
-export default function Home() {
+export default function Page() {
   const [length, setLength] = useState(12);
   const [useUppercase, setUseUppercase] = useState(true);
   const [useNumbers, setUseNumbers] = useState(true);
@@ -79,6 +79,12 @@ export default function Home() {
           <br />
           <button onClick={generatePassword} className="bg-green-500 hover:bg-green-700 text-white font-bold mt-4 px-4 py-2 rounded">
             Generate Password
+          </button>
+          <button onClick={() => navigator.clipboard.writeText(password)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold ml-4 px-4 py-2 rounded">
+            Copy to Clipboard
+          </button>
+          <button onClick={() => setPassword('')} className="bg-red-500 hover:bg-red-700 text-white font-bold ml-4 px-4 py-2 rounded">
+            Clear
           </button>
           <br />
           {password && (
