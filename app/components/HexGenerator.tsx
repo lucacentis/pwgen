@@ -72,7 +72,7 @@ export default function HexGenerator() {
             </button>
           </div>
           <p className="text-lg break-all font-mono">{hex}</p>
-          <p className="text-sm mt-2 text-gray-400">Tip: This is cryptographically secure using the browser's crypto API.</p>
+          <p className="text-sm mt-2 text-gray-400">Tip: This is cryptographically secure using the browsers crypto API.</p>
         </div>
       )}
     </div>
