@@ -2,9 +2,10 @@
 import { useState } from 'react';
 import PasswordGenerator from './components/PasswordGenerator';
 import PassphraseGenerator from './components/PassphraseGenerator';
+import HexGenerator from './components/HexGenerator';
 
 export default function Page() {
-  const [generatorType, setGeneratorType] = useState('password'); // 'password' or 'passphrase'
+  const [generatorType, setGeneratorType] = useState('password'); // 'password', 'passphrase' or 'hex'
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-8 md:p-12 lg:p-24 bg-gray-900 text-white">
@@ -19,13 +20,25 @@ export default function Page() {
           </button>
           <button
             onClick={() => setGeneratorType('passphrase')}
-            className={`px-4 py-2 rounded-r-lg ${generatorType === 'passphrase' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+            className={`px-4 py-2 ${generatorType === 'passphrase' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
           >
             Passphrase
           </button>
+          <button
+            onClick={() => setGeneratorType('hex')}
+            className={`px-4 py-2 rounded-r-lg ${generatorType === 'hex' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+          >
+            Hex / PSK
+          </button>
         </div>
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-          {generatorType === 'password' ? <PasswordGenerator /> : <PassphraseGenerator />}
+          {generatorType === 'password' ? (
+            <PasswordGenerator />
+          ) : generatorType === 'passphrase' ? (
+            <PassphraseGenerator />
+          ) : (
+            <HexGenerator />
+          )}
         </div>
       </div>
     </main>
