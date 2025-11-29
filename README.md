@@ -1,29 +1,25 @@
-# pwgen - Password and Passphrase Generator
+# pwgen - Password, Passphrase & Hex Generator
 
-A simple, secure, and modern password and passphrase generator built with Next.js and TypeScript.
+A small, secure, and modern generator for passwords, passphrases and hex strings built with Next.js and TypeScript.
 
 ## Features
 
 ### Password Generator
-- **Customizable Length:** Generate passwords from 8 to 40 characters long.
-- **Character Sets:** Include uppercase letters, numbers, and symbols.
-- **Cryptographically Secure:** Uses `window.crypto` for secure random number generation.
-- **Password Strength:** Calculates and displays the entropy of the generated password.
 
-### Passphrase Generator
-- **Customizable Length:** Generate passphrases from 3 to 10 words long.
-- **EFF Wordlist:** Uses the EFF long wordlist for generating passphrases.
-- **Customizable Separator:** Choose between four separators: hyphen, dot, comma, and underscore.
-- **Include Numbers:** Option to add a random number (0-9) after each word.
-- **Cryptographically Secure:** Uses `window.crypto` for secure random word selection.
+- Password generator with customizable length (8–40) and character sets (uppercase, numbers, symbols).
+- Passphrase generator using an EFF-style wordlist with configurable word count and separators.
+- Hex string generator with configurable length and optional uppercase output.
+- Cryptographically secure randomness using `window.crypto`.
+- Entropy calculation for generated passwords and passphrases.
+- UI highlights: digits render in blue and symbols in red to aid visual scanning.
 
-## Getting Started
+## Quick Start
 
 To run the application locally, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/pwgen.git
+   git clone https://github.com/lucacentis/pwgen.git
    ```
 2. Install the dependencies:
    ```bash
@@ -35,7 +31,7 @@ To run the application locally, follow these steps:
     ```
 4. Open your browser and navigate to `http://localhost:3000`.
 
-## Technologies Used
+## Technologies
 
 - [Next.js](https://nextjs.org/)
 - [React](https://reactjs.org/)

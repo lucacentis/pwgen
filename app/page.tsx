@@ -10,7 +10,7 @@ export default function Page() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-8 md:p-12 lg:p-24 bg-gray-900 text-white">
       <div className="w-full max-w-lg mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8">Password and Passphrase Generator</h1>
+        <h1 className="text-4xl font-bold text-center mb-8">Simple & Secure Generator</h1>
         <div className="flex justify-center mb-8">
           <button
             onClick={() => setGeneratorType('password')}
@@ -28,7 +28,7 @@ export default function Page() {
             onClick={() => setGeneratorType('hex')}
             className={`px-4 py-2 rounded-r-lg ${generatorType === 'hex' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
           >
-            Hex / PSK
+            Hex
           </button>
         </div>
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
