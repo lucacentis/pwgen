@@ -24,3 +24,9 @@ export const generatePassphrase = (
 
   return passphrase;
 };
+
+export const calculateEntropy = (numWords: number, addRandomNumber: boolean) : number => {
+  const entropyPerWord = Math.log2(wordlist.length);
+  const entropyForNumber = addRandomNumber ? Math.log2(10) : 0;
+  return numWords * entropyPerWord + entropyForNumber;
+};

@@ -22,10 +22,10 @@ export default function HexGenerator() {
 
   return (
     <div className="p-4 rounded-lg bg-gray-800 text-white">
-      <h2 className="text-2xl font-bold mb-4 text-center">Hex / PSK Generator</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Hex Generator</h2>
 
       <div className="flex items-center mb-4">
-        <label htmlFor="hexLength" className="mr-2">Hex length:</label>
+        <label htmlFor="hexLength" className="mr-2">Length:</label>
         <input
           type="range"
           id="hexLength"
@@ -36,7 +36,7 @@ export default function HexGenerator() {
           onChange={(e) => setLength(Number(e.target.value))}
           className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
         />
-        <span className="ml-4 w-12 text-right font-mono">{length} ch</span>
+        <span className="ml-4 w-8 text-center">{length}</span>
       </div>
 
       <div className="flex items-center gap-4 mb-4">
@@ -72,7 +72,6 @@ export default function HexGenerator() {
             </button>
           </div>
           <p className="text-lg break-all font-mono">{hex}</p>
-          <p className="text-sm mt-2 text-gray-400">Tip: This is cryptographically secure using the browsers crypto API.</p>
         </div>
       )}
     </div>

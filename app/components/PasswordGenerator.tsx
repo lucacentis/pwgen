@@ -90,7 +90,31 @@ export default function PasswordGenerator() {
               {copied ? 'Copied!' : 'Copy'}
             </button>
           </div>
-          <p className="text-lg break-all font-mono">{password}</p>
+          <p className="text-lg break-all font-mono">
+            {password.split('').map((ch, i) => {
+              if (/\d/.test(ch)) {
+                return (
+                  <span key={i} className="text-blue-400">
+                    {ch}
+                  </span>
+                );
+              }
+
+              if (/[A-Za-z]/.test(ch)) {
+                return (
+                  <span key={i} className="text-white">
+                    {ch}
+                  </span>
+                );
+              }
+
+              return (
+                <span key={i} className="text-red-400">
+                  {ch}
+                </span>
+              );
+            })}
+          </p>
           <p className="text-sm mt-2 text-gray-400">Entropy: {entropy.toFixed(2)} bits</p>
         </div>
       )}

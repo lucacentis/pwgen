@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { generatePassphrase } from '@/lib/passphrase';
+import { generatePassphrase, calculateEntropy } from '@/lib/passphrase';
 
 export default function PassphraseGenerator() {
   const [numWords, setNumWords] = useState(4);
@@ -9,10 +9,12 @@ export default function PassphraseGenerator() {
   const [passphrase, setPassphrase] = useState('');
   const [copied, setCopied] = useState(false);
   const [addRandomNumber, setAddRandomNumber] = useState(true);
+  const [entropy, setEntropy] = useState(0);
 
   const handleGeneratePassphrase = () => {
     const newPassphrase = generatePassphrase(numWords, separator, addRandomNumber);
     setPassphrase(newPassphrase);
+    setEntropy(calculateEntropy(numWords, addRandomNumber));
   };
 
   const handleCopyToClipboard = () => {
@@ -25,7 +27,7 @@ export default function PassphraseGenerator() {
     <div className="p-4 rounded-lg bg-gray-800 text-white">
       <h2 className="text-2xl font-bold mb-4 text-center">Passphrase Generator</h2>
       <div className="flex items-center mb-4">
-        <label htmlFor="numWords" className="mr-2">Number of words:</label>
+        <label htmlFor="numWords" className="mr-2">Words:</label>
         <input
           type="range"
           id="numWords"
@@ -80,7 +82,32 @@ export default function PassphraseGenerator() {
               {copied ? 'Copied!' : 'Copy'}
             </button>
           </div>
-          <p className="text-lg break-all font-mono">{passphrase}</p>
+          <p className="text-lg break-all font-mono">
+            {passphrase.split('').map((ch, i) => {
+              if (/\d/.test(ch)) {
+                return (
+                  <span key={i} className="text-blue-400">
+                    {ch}
+                  </span>
+                );
+              }
+
+              if (/\s/.test(ch) || /[A-Za-z]/.test(ch)) {
+                return (
+                  <span key={i} className="text-white">
+                    {ch}
+                  </span>
+                );
+              }
+
+              return (
+                <span key={i} className="text-red-400">
+                  {ch}
+                </span>
+              );
+            })}
+          </p>
+          <p className="text-sm mt-2 text-gray-400">Entropy: {entropy.toFixed(2)} bits</p>
         </div>
       )}
     </div>
