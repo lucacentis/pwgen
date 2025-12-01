@@ -2,12 +2,25 @@
 
 import { useState } from 'react';
 import { generatePassword, calculateEntropy } from '@/lib/password';
+import { parseAsBoolean, parseAsInteger, useQueryState } from 'nuqs';
 
 export default function PasswordGenerator() {
-  const [length, setLength] = useState(12);
-  const [useUppercase, setUseUppercase] = useState(true);
-  const [useNumbers, setUseNumbers] = useState(true);
-  const [useSymbols, setUseSymbols] = useState(true);
+  const [length, setLength] = useQueryState(
+    'length',
+    parseAsInteger.withDefault(12).withOptions({ throttleMs: 500 })
+  );
+  const [useUppercase, setUseUppercase] = useQueryState(
+    'uppercase',
+    parseAsBoolean.withDefault(true)
+  );
+  const [useNumbers, setUseNumbers] = useQueryState(
+    'numbers',
+    parseAsBoolean.withDefault(true)
+  );
+  const [useSymbols, setUseSymbols] = useQueryState(
+    'symbols',
+    parseAsBoolean.withDefault(true)
+  );
   const [password, setPassword] = useState('');
   const [entropy, setEntropy] = useState(0);
   const [copied, setCopied] = useState(false);

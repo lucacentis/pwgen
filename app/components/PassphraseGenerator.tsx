@@ -2,13 +2,20 @@
 
 import { useState } from 'react';
 import { generatePassphrase, calculateEntropy } from '@/lib/passphrase';
+import { parseAsBoolean, parseAsInteger, parseAsString, useQueryState } from 'nuqs';
 
 export default function PassphraseGenerator() {
-  const [numWords, setNumWords] = useState(4);
+  const [numWords, setNumWords] = useQueryState(
+    'length',
+    parseAsInteger.withDefault(4).withOptions({ throttleMs: 500 })
+  );
   const [separator, setSeparator] = useState('-');
   const [passphrase, setPassphrase] = useState('');
   const [copied, setCopied] = useState(false);
-  const [addRandomNumber, setAddRandomNumber] = useState(true);
+  const [addRandomNumber, setAddRandomNumber] = useQueryState(
+    'numbers',
+    parseAsBoolean.withDefault(true)
+  );
   const [entropy, setEntropy] = useState(0);
 
   const handleGeneratePassphrase = () => {

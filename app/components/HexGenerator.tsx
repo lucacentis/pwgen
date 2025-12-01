@@ -2,10 +2,17 @@
 
 import { useState } from 'react';
 import { generateHexFormatted } from '@/lib/hex';
+import { parseAsBoolean, parseAsInteger, useQueryState } from 'nuqs';
 
 export default function HexGenerator() {
-  const [length, setLength] = useState(32); // hex characters
-  const [uppercase, setUppercase] = useState(false);
+  const [length, setLength] = useQueryState(
+    'length',
+    parseAsInteger.withDefault(32).withOptions({ throttleMs: 500 })
+  );
+  const [uppercase, setUppercase] = useQueryState(
+    'uppercase',
+    parseAsBoolean.withDefault(false)
+  );
   const [hex, setHex] = useState('');
   const [copied, setCopied] = useState(false);
 
