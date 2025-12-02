@@ -18,9 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NuqsAdapter>
-          {children}
-        </NuqsAdapter>
+        <Suspense>
+          <NuqsAdapter>
+            {children}
+          </NuqsAdapter>
+        </Suspense>
       </body>
     </html>
   )
