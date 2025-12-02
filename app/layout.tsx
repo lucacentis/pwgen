@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react' 
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
@@ -18,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NuqsAdapter>
-          {children}
-        </NuqsAdapter>
+        <Suspense>
+          <NuqsAdapter>
+            {children}
+          </NuqsAdapter>
+        </Suspense>
       </body>
     </html>
   )
