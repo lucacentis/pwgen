@@ -1,10 +1,18 @@
 
+import { clampInteger, PASSWORD_LENGTH } from './limits';
+
 export const generatePassword = (
   length: number,
   useUppercase: boolean,
   useNumbers: boolean,
   useSymbols: boolean
 ): string => {
+  length = clampInteger(
+    length,
+    PASSWORD_LENGTH.min,
+    PASSWORD_LENGTH.max,
+    PASSWORD_LENGTH.default
+  );
   const lowercaseCharset = 'abcdefghijklmnopqrstuvwxyz';
   const uppercaseCharset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const numberCharset = '0123456789';
@@ -55,5 +63,11 @@ export const generatePassword = (
 };
 
 export const calculateEntropy = (length: number, charsetSize: number): number => {
-  return Math.log2(Math.pow(charsetSize, length));
+  const boundedLength = clampInteger(
+    length,
+    PASSWORD_LENGTH.min,
+    PASSWORD_LENGTH.max,
+    PASSWORD_LENGTH.default
+  );
+  return Math.log2(Math.pow(charsetSize, boundedLength));
 };

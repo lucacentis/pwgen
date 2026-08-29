@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { generatePassphrase, calculateEntropy } from '@/lib/passphrase';
-import { parseAsBoolean, parseAsInteger, parseAsString, useQueryState } from 'nuqs';
+import { parseAsBoolean, parseAsInteger, useQueryState } from 'nuqs';
+import { clampInteger, PASSPHRASE_WORDS } from '@/lib/limits';
 
 export default function PassphraseGenerator() {
   const [numWords, setNumWords] = useQueryState(
     'length',
-    parseAsInteger.withDefault(4).withOptions({ throttleMs: 500 })
+    parseAsInteger.withDefault(PASSPHRASE_WORDS.default).withOptions({ throttleMs: 500 })
   );
   const [separator, setSeparator] = useState('-');
   const [passphrase, setPassphrase] = useState('');
@@ -17,11 +18,23 @@ export default function PassphraseGenerator() {
     parseAsBoolean.withDefault(true)
   );
   const [entropy, setEntropy] = useState(0);
+  const boundedNumWords = clampInteger(
+    numWords,
+    PASSPHRASE_WORDS.min,
+    PASSPHRASE_WORDS.max,
+    PASSPHRASE_WORDS.default
+  );
+
+  useEffect(() => {
+    if (numWords !== boundedNumWords) {
+      setNumWords(boundedNumWords);
+    }
+  }, [boundedNumWords, numWords, setNumWords]);
 
   const handleGeneratePassphrase = () => {
-    const newPassphrase = generatePassphrase(numWords, separator, addRandomNumber);
+    const newPassphrase = generatePassphrase(boundedNumWords, separator, addRandomNumber);
     setPassphrase(newPassphrase);
-    setEntropy(calculateEntropy(numWords, addRandomNumber));
+    setEntropy(calculateEntropy(boundedNumWords, addRandomNumber));
   };
 
   const handleCopyToClipboard = () => {
@@ -38,9 +51,9 @@ export default function PassphraseGenerator() {
         <input
           type="range"
           id="numWords"
-          min="3"
-          max="10"
-          value={numWords}
+          min={PASSPHRASE_WORDS.min}
+          max={PASSPHRASE_WORDS.max}
+          value={boundedNumWords}
           onChange={(e) => setNumWords(Number(e.target.value))}
           className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
         />
