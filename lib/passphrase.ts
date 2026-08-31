@@ -1,10 +1,17 @@
 import { wordlist } from './wordlist';
+import { clampInteger, PASSPHRASE_WORDS } from './limits';
 
 export const generatePassphrase = (
   numWords: number,
   separator: string,
   addRandomNumber: boolean
 ): string => {
+  numWords = clampInteger(
+    numWords,
+    PASSPHRASE_WORDS.min,
+    PASSPHRASE_WORDS.max,
+    PASSPHRASE_WORDS.default
+  );
   let passphrase = '';
   const crypto = window.crypto;
   const randomValues = new Uint32Array(numWords);
@@ -26,6 +33,12 @@ export const generatePassphrase = (
 };
 
 export const calculateEntropy = (numWords: number, addRandomNumber: boolean) : number => {
+  numWords = clampInteger(
+    numWords,
+    PASSPHRASE_WORDS.min,
+    PASSPHRASE_WORDS.max,
+    PASSPHRASE_WORDS.default
+  );
   const entropyPerWord = Math.log2(wordlist.length);
   const entropyForNumber = addRandomNumber ? Math.log2(10) : 0;
   return numWords * entropyPerWord + entropyForNumber;

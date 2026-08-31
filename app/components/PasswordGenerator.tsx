@@ -1,22 +1,48 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { generatePassword, calculateEntropy } from '@/lib/password';
+import { parseAsBoolean, parseAsInteger, useQueryState } from 'nuqs';
+import { clampInteger, PASSWORD_LENGTH } from '@/lib/limits';
 
 export default function PasswordGenerator() {
-  const [length, setLength] = useState(12);
-  const [useUppercase, setUseUppercase] = useState(true);
-  const [useNumbers, setUseNumbers] = useState(true);
-  const [useSymbols, setUseSymbols] = useState(true);
+  const [length, setLength] = useQueryState(
+    'length',
+    parseAsInteger.withDefault(PASSWORD_LENGTH.default).withOptions({ throttleMs: 500 })
+  );
+  const [useUppercase, setUseUppercase] = useQueryState(
+    'uppercase',
+    parseAsBoolean.withDefault(true)
+  );
+  const [useNumbers, setUseNumbers] = useQueryState(
+    'numbers',
+    parseAsBoolean.withDefault(true)
+  );
+  const [useSymbols, setUseSymbols] = useQueryState(
+    'symbols',
+    parseAsBoolean.withDefault(true)
+  );
   const [password, setPassword] = useState('');
   const [entropy, setEntropy] = useState(0);
   const [copied, setCopied] = useState(false);
+  const boundedLength = clampInteger(
+    length,
+    PASSWORD_LENGTH.min,
+    PASSWORD_LENGTH.max,
+    PASSWORD_LENGTH.default
+  );
+
+  useEffect(() => {
+    if (length !== boundedLength) {
+      setLength(boundedLength);
+    }
+  }, [boundedLength, length, setLength]);
 
   const handleGeneratePassword = () => {
-    const newPassword = generatePassword(length, useUppercase, useNumbers, useSymbols);
+    const newPassword = generatePassword(boundedLength, useUppercase, useNumbers, useSymbols);
     setPassword(newPassword);
     const charsetSize = 26 + (useUppercase ? 26 : 0) + (useNumbers ? 10 : 0) + (useSymbols ? 26 : 0);
-    setEntropy(calculateEntropy(length, charsetSize));
+    setEntropy(calculateEntropy(boundedLength, charsetSize));
   };
 
   const handleCopyToClipboard = () => {
@@ -33,9 +59,9 @@ export default function PasswordGenerator() {
         <input
           type="range"
           id="length"
-          min="8"
-          max="40"
-          value={length}
+          min={PASSWORD_LENGTH.min}
+          max={PASSWORD_LENGTH.max}
+          value={boundedLength}
           onChange={(e) => setLength(Number(e.target.value))}
           className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
         />

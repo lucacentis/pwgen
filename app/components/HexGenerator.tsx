@@ -1,16 +1,36 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { generateHexFormatted } from '@/lib/hex';
+import { parseAsBoolean, parseAsInteger, useQueryState } from 'nuqs';
+import { clampInteger, HEX_LENGTH } from '@/lib/limits';
 
 export default function HexGenerator() {
-  const [length, setLength] = useState(32); // hex characters
-  const [uppercase, setUppercase] = useState(false);
+  const [length, setLength] = useQueryState(
+    'length',
+    parseAsInteger.withDefault(HEX_LENGTH.default).withOptions({ throttleMs: 500 })
+  );
+  const [uppercase, setUppercase] = useQueryState(
+    'uppercase',
+    parseAsBoolean.withDefault(false)
+  );
   const [hex, setHex] = useState('');
   const [copied, setCopied] = useState(false);
+  const boundedLength = clampInteger(
+    length,
+    HEX_LENGTH.min,
+    HEX_LENGTH.max,
+    HEX_LENGTH.default
+  );
+
+  useEffect(() => {
+    if (length !== boundedLength) {
+      setLength(boundedLength);
+    }
+  }, [boundedLength, length, setLength]);
 
   const handleGenerate = () => {
-    const h = generateHexFormatted(length, uppercase);
+    const h = generateHexFormatted(boundedLength, uppercase);
     setHex(h);
   };
 
@@ -29,10 +49,10 @@ export default function HexGenerator() {
         <input
           type="range"
           id="hexLength"
-          min={2}
-          max={128}
+          min={HEX_LENGTH.min}
+          max={HEX_LENGTH.max}
           step={1}
-          value={length}
+          value={boundedLength}
           onChange={(e) => setLength(Number(e.target.value))}
           className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
         />
@@ -50,7 +70,7 @@ export default function HexGenerator() {
           />
           <span className="ml-2">Uppercase</span>
         </label>
-        <div className="text-sm text-gray-400">Bytes: <span className="font-mono">{Math.ceil(length / 2)}</span></div>
+        <div className="text-sm text-gray-400">Bytes: <span className="font-mono">{Math.ceil(boundedLength / 2)}</span></div>
       </div>
 
       <button

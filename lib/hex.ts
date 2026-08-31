@@ -1,7 +1,12 @@
+import { clampInteger, HEX_LENGTH } from './limits';
+
 export const generateHex = (hexLength: number): string => {
-  // Ensure hexLength is a non-negative integer
-  const length = Math.max(0, Math.floor(hexLength));
-  if (length === 0) return '';
+  const length = clampInteger(
+    hexLength,
+    HEX_LENGTH.min,
+    HEX_LENGTH.max,
+    HEX_LENGTH.default
+  );
 
   // Number of bytes required to produce the requested hex chars
   const bytes = Math.ceil(length / 2);
